@@ -164,7 +164,7 @@ public class FirebaseManager : MonoBehaviour
             UIManager.instance.UserDataScreen(); // Change to user data UI
             confirmLoginText.text = "";
             ClearLoginFeilds();
-            ClearRegisterFeilds();            
+            ClearRegisterFeilds();
         }
     }
 
@@ -270,7 +270,7 @@ public class FirebaseManager : MonoBehaviour
 
     private IEnumerator UpdateUsernameDatabase(string _username)
     {
-        Debug.Log(_username);
+        //Set the currently logged in user username in the database
         var DBTask = DBreference.Child("users").Child(User.UserId).Child("username").SetValueAsync(_username);
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
@@ -287,6 +287,7 @@ public class FirebaseManager : MonoBehaviour
 
     private IEnumerator UpdateXp(int _xp)
     {
+        //Set the currently logged in user xp
         var DBTask = DBreference.Child("users").Child(User.UserId).Child("xp").SetValueAsync(_xp);
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
@@ -303,6 +304,7 @@ public class FirebaseManager : MonoBehaviour
 
     private IEnumerator UpdateKills(int _kills)
     {
+        //Set the currently logged in user kills
         var DBTask = DBreference.Child("users").Child(User.UserId).Child("kills").SetValueAsync(_kills);
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
@@ -319,6 +321,7 @@ public class FirebaseManager : MonoBehaviour
 
     private IEnumerator UpdateDeaths(int _deaths)
     {
+        //Set the currently logged in user deaths
         var DBTask = DBreference.Child("users").Child(User.UserId).Child("deaths").SetValueAsync(_deaths);
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
@@ -335,6 +338,7 @@ public class FirebaseManager : MonoBehaviour
 
     private IEnumerator LoadUserData()
     {
+        //Get the currently logged in user data
         var DBTask = DBreference.Child("users").Child(User.UserId).GetValueAsync();
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
@@ -363,6 +367,7 @@ public class FirebaseManager : MonoBehaviour
 
     private IEnumerator LoadScoreboardData()
     {
+        //Get all the users data ordered by kills amount
         var DBTask = DBreference.Child("users").OrderByChild("kills").GetValueAsync();
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
@@ -391,8 +396,8 @@ public class FirebaseManager : MonoBehaviour
                 int xp = int.Parse(childSnapshot.Child("xp").Value.ToString());
 
                 //Instantiate new scoreboard elements
-                GameObject serverElement = Instantiate(scoreElement, scoreboardContent);
-                serverElement.GetComponent<ScoreElement>().NewScoreElement(username, kills, deaths, xp);
+                GameObject scoreboardElement = Instantiate(scoreElement, scoreboardContent);
+                scoreboardElement.GetComponent<ScoreElement>().NewScoreElement(username, kills, deaths, xp);
             }
 
             //Go to scoareboard screen
